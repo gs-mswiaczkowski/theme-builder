@@ -323,7 +323,7 @@ export function Preview({
       </div>
 
       <div style={{ padding: isMobile ? "36px 16px" : "52px 24px", display: "flex", flexDirection: "column", gap: 14, maxWidth: 1140, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
-        <div style={{ display: "grid", gridTemplateColumns: cols3, gap: isMobile ? 16 : 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: cols3, gap: isMobile ? 16 : 24, alignItems: "start" }}>
           {/* Left — Feed (span 2) */}
           <div style={{ gridColumn: isMobile ? "auto" : "span 2", display: "flex", flexDirection: "column", gap: 14 }}>
             {/* Feed header + tabs */}
@@ -417,8 +417,8 @@ export function Preview({
       </div>
 
       {/* Need more help */}
-      <div style={{ background: s.colors.bg, padding: isMobile ? "36px 16px" : "52px 24px" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto", boxSizing: "border-box" }}>
+      <div style={{ background: s.colors.bg, padding: isMobile ? "36px 0" : "52px 0" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: `0 ${isMobile ? 16 : 24}px`, boxSizing: "border-box" }}>
           <h2 style={{ fontFamily: fontHeading, fontSize: fs(22), fontWeight: 700, color: s.colors.text, marginBottom: 24 }}>Need more help?</h2>
           <div style={{ display: "grid", gridTemplateColumns: cols3, gap: isMobile ? 12 : 20 }}>
             {[
