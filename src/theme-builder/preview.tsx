@@ -417,7 +417,7 @@ export function Preview({
       </div>
 
       {/* Need more help */}
-      <div style={{ background: s.colors.surfaceMuted ?? s.colors.bg, borderTop: `1px solid ${s.colors.border}`, padding: isMobile ? "36px 16px" : "52px 24px" }}>
+      <div style={{ background: s.colors.bg, padding: isMobile ? "36px 16px" : "52px 24px" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto", boxSizing: "border-box" }}>
           <h2 style={{ fontFamily: fontHeading, fontSize: fs(22), fontWeight: 700, color: s.colors.text, marginBottom: 24 }}>Need more help?</h2>
           <div style={{ display: "grid", gridTemplateColumns: cols3, gap: isMobile ? 12 : 20 }}>
