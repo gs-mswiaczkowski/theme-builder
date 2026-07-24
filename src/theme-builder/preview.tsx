@@ -322,7 +322,7 @@ export function Preview({
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? "36px 16px" : "52px 24px", display: "flex", flexDirection: "column", gap: 14, maxWidth: 1140, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+      <div style={{ padding: isMobile ? "36px 16px 0" : "52px 24px 0", display: "flex", flexDirection: "column", gap: 14, maxWidth: 1140, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
         <div style={{ display: "grid", gridTemplateColumns: cols3, gap: isMobile ? 16 : 24, alignItems: "start" }}>
           {/* Left — Feed (span 2) */}
           <div style={{ gridColumn: isMobile ? "auto" : "span 2", display: "flex", flexDirection: "column", gap: 14 }}>
