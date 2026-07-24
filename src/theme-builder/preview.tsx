@@ -426,15 +426,19 @@ export function Preview({
               { icon: <HeadphonesIcon size={fs(28)} strokeWidth={1.5} />, title: "Contact support", desc: "Contact our support team and we'll be happy to help you get up and running!" },
               { icon: <BookOpen size={fs(28)} strokeWidth={1.5} />, title: "Resources", desc: "Find all the guidance you need as you navigate through our success resources" },
             ].map(({ icon, title, desc }) => (
-              <div key={title} style={{ ...card, padding: 0, overflow: "hidden" }}>
-                <div style={{ height: 120, background: `${brand}18`, display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 24px", color: brand }}>
-                  {icon}
-                </div>
-                <div style={{ padding: "18px 20px" }}>
-                  <div style={{ fontFamily: fontHeading, fontSize: fs(15), fontWeight: 700, color: brand, marginBottom: 6 }}>{title}</div>
-                  <div style={{ fontSize: fs(13), color: s.colors.muted, lineHeight: 1.55 }}>{desc}</div>
-                </div>
-              </div>
+              <PreviewCard key={title} states={cardStates} borderWidth={cardBW} radius={s.radius.card} style={{ padding: 0, overflow: "hidden" }}>
+                {(c) => (
+                  <>
+                    <div style={{ height: 120, background: `${brand}18`, display: "flex", alignItems: "center", justifyContent: "flex-start", padding: "0 24px", color: brand }}>
+                      {icon}
+                    </div>
+                    <div style={{ padding: "18px 20px" }}>
+                      <div style={{ fontFamily: fontHeading, fontSize: fs(15), fontWeight: 700, color: c.title, marginBottom: 6 }}>{title}</div>
+                      <div style={{ fontSize: fs(13), color: c.content, lineHeight: 1.55 }}>{desc}</div>
+                    </div>
+                  </>
+                )}
+              </PreviewCard>
             ))}
           </div>
         </div>

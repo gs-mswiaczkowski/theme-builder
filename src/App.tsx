@@ -182,33 +182,37 @@ function App() {
     el.textContent = scoped
   }, [customCss])
 
+  // Apply a saved configuration object onto the working state.
+  const applySaved = (d: Record<string, unknown>) => {
+    if (d.selectedPreset) setSelectedPreset(d.selectedPreset as string)
+    if (d.mode) setMode(d.mode as typeof mode)
+    if (d.colorTab) setColorTab(d.colorTab as typeof colorTab)
+    if (d.headingFont) setHeadingFont(d.headingFont as string)
+    if (d.bodyFont) setBodyFont(d.bodyFont as string)
+    if (d.textSize) setTextSize(d.textSize as TextSize)
+    if (Array.isArray(d.customFonts)) setCustomFonts(d.customFonts as CustomFont[])
+    if (Array.isArray(d.googleFonts)) setGoogleFonts(d.googleFonts as string[])
+    if (d.styles) setStyles(d.styles as StyleShapes)
+    if (d.cardTokens) setCardTokens(d.cardTokens as CardTokens)
+    if (d.feedTokens) setFeedTokens(d.feedTokens as FeedTokens)
+    if (d.feedView) setFeedView(d.feedView as FeedView)
+    if ("logoLight" in d) setLogoLight(d.logoLight as string | null)
+    if ("logoDark" in d) setLogoDark(d.logoDark as string | null)
+    if (d.btnTokens) setBtnTokens(d.btnTokens as BtnTokens)
+    if (d.tokens) setTokens(d.tokens as PresetTokens)
+    if (d.brandColor) setBrandColorState(d.brandColor as string)
+    if (typeof d.customCss === "string") setCustomCss(d.customCss)
+  }
+
   // Load a previously saved configuration on first mount.
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
-      if (!raw) return
-      const d = JSON.parse(raw)
-      if (d.selectedPreset) setSelectedPreset(d.selectedPreset)
-      if (d.mode) setMode(d.mode)
-      if (d.colorTab) setColorTab(d.colorTab)
-      if (d.headingFont) setHeadingFont(d.headingFont)
-      if (d.bodyFont) setBodyFont(d.bodyFont)
-      if (d.textSize) setTextSize(d.textSize)
-      if (Array.isArray(d.customFonts)) setCustomFonts(d.customFonts)
-      if (Array.isArray(d.googleFonts)) setGoogleFonts(d.googleFonts)
-      if (d.styles) setStyles(d.styles)
-      if (d.cardTokens) setCardTokens(d.cardTokens)
-      if (d.feedTokens) setFeedTokens(d.feedTokens)
-      if (d.feedView) setFeedView(d.feedView)
-      if ("logoLight" in d) setLogoLight(d.logoLight)
-      if ("logoDark" in d) setLogoDark(d.logoDark)
-      if (d.btnTokens) setBtnTokens(d.btnTokens)
-      if (d.tokens) setTokens(d.tokens)
-      if (d.brandColor) setBrandColorState(d.brandColor)
-      if (typeof d.customCss === "string") setCustomCss(d.customCss)
+      if (raw) applySaved(JSON.parse(raw))
     } catch {
       /* ignore malformed storage */
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Selecting a preset resets brand color, working tokens and button overrides.
@@ -289,6 +293,18 @@ function App() {
     setLogoLight(null)
     setLogoDark(null)
     setCustomCss("")
+  }
+
+  // Discard reverts to the last published (saved) state — not the default theme.
+  // If nothing was ever published, the baseline is the fresh default.
+  const restoreSaved = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (raw) applySaved(JSON.parse(raw))
+      else resetAll()
+    } catch {
+      resetAll()
+    }
   }
 
   // Publish persists the config; the toolbar shows a brief confirmation.
@@ -477,7 +493,7 @@ function App() {
           viewport={viewport}
           setViewport={setViewport}
           onPublish={handlePublish}
-          onDiscard={() => { setPanelOpen(false); window.setTimeout(resetAll, 700) }}
+          onDiscard={() => { setPanelOpen(false); window.setTimeout(restoreSaved, 700) }}
           published={published}
           light={tab === "dark"}
           canUndo={canUndo}
