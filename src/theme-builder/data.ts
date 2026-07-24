@@ -412,6 +412,13 @@ export const STYLE_GROUPS = [
 
 /* ─── Helpers ─── */
 
+/** Prefixes a public-folder path (e.g. "/avatars/1.jpg") with the app's base
+ *  URL, so static assets resolve correctly when deployed under a subpath
+ *  (e.g. GitHub Pages at /theme-builder/) instead of always assuming root. */
+export function withBase(path: string): string {
+  return `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`
+}
+
 export function presetSwatchColors(tokens?: PresetTokens | TokenMap): string[] {
   const l = (tokens as PresetTokens)?.light || (tokens as TokenMap) || {}
   return [

@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ReactNode } from "react"
 import { BookOpen, FileText, HeadphonesIcon } from "lucide-react"
-import { resolveTokenColor, type PreviewStyle, type TokenMap } from "./data"
+import { resolveTokenColor, withBase, type PreviewStyle, type TokenMap } from "./data"
 
 /**
  * Live preview of the community, rendered with INLINE styles driven by the
@@ -172,7 +172,7 @@ export function PreviewNav({ s, btnTokens = {}, activeTok = {}, logoLight = null
             </>
           )}
           <PreviewBtn bg={b.bg} hoverBg={b.hoverBg} activeBg={b.activeBg} color={b.color} border={b.border} shadow={b.shadow} hoverShadow={b.hoverShadow} activeShadow={b.activeShadow} style={{ height: 32, padding: "0 14px", fontSize: fs(12), fontWeight: bfw, borderRadius: s.radius.button, border: "none", fontFamily: btnFont }}>New post</PreviewBtn>
-          <img src="/avatars/6.jpg" alt="" style={{ width: 30, height: 30, borderRadius: s.radius.badge, objectFit: "cover", boxShadow: "0 0 0 1px rgba(0,0,0,0.1)", marginLeft: 2 }} />
+          <img src={withBase("/avatars/6.jpg")} alt="" style={{ width: 30, height: 30, borderRadius: s.radius.badge, objectFit: "cover", boxShadow: "0 0 0 1px rgba(0,0,0,0.1)", marginLeft: 2 }} />
         </div>
       </div>
     </div>
@@ -224,7 +224,7 @@ export function Preview({
     <>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-          <img src={p.avatar} alt="" style={{ width: 32, height: 32, borderRadius: s.radius.badge, objectFit: "cover", flexShrink: 0 }} />
+          <img src={withBase(p.avatar)} alt="" style={{ width: 32, height: 32, borderRadius: s.radius.badge, objectFit: "cover", flexShrink: 0 }} />
           <div style={{ fontSize: fs(14) }}>
             <span style={{ color: link, fontWeight: 600 }}>{p.author}</span> <span style={{ color: s.colors.muted }}>{p.role}</span>
           </div>
@@ -246,7 +246,7 @@ export function Preview({
           <span style={{ display: "flex", alignItems: "center", gap: 5 }}><svg width={fs(14)} height={fs(14)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>{p.comments}</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: fs(13), color: s.colors.muted }}>
-          <img src={p.avatar} alt="" style={{ width: 22, height: 22, borderRadius: s.radius.badge, objectFit: "cover" }} />{p.time}
+          <img src={withBase(p.avatar)} alt="" style={{ width: 22, height: 22, borderRadius: s.radius.badge, objectFit: "cover" }} />{p.time}
         </div>
       </div>
     </>
@@ -289,7 +289,7 @@ export function Preview({
             {!isMobile && <span style={{ fontSize: fs(14), color: s.colors.muted }}>Recently online:</span>}
             <div style={{ display: "flex" }}>
               {[1, 2, 3, 4, 5].map((n, i) => (
-                <img key={n} src={`/avatars/${n}.jpg`} alt="" style={{ width: 24, height: 24, borderRadius: s.radius.badge, objectFit: "cover", marginLeft: i === 0 ? 0 : -3, boxShadow: `0 0 0 2px ${s.colors.surface}` }} />
+                <img key={n} src={withBase(`/avatars/${n}.jpg`)} alt="" style={{ width: 24, height: 24, borderRadius: s.radius.badge, objectFit: "cover", marginLeft: i === 0 ? 0 : -3, boxShadow: `0 0 0 2px ${s.colors.surface}` }} />
               ))}
             </div>
           </div>
@@ -395,7 +395,7 @@ export function Preview({
               ].map(({ n, r, pts, rank }) => (
                 <div key={n} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                   <div style={{ width: 14, fontSize: fs(12), fontWeight: 700, color: rank <= 3 ? highlighted : s.colors.muted, textAlign: "right", flexShrink: 0 }}>{rank}</div>
-                  <img src={`/avatars/${rank + 5}.jpg`} alt="" style={{ width: 36, height: 36, borderRadius: s.radius.badge, objectFit: "cover", boxShadow: "0 0 0 1px rgba(0,0,0,0.1)", flexShrink: 0 }} />
+                  <img src={withBase(`/avatars/${rank + 5}.jpg`)} alt="" style={{ width: 36, height: 36, borderRadius: s.radius.badge, objectFit: "cover", boxShadow: "0 0 0 1px rgba(0,0,0,0.1)", flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: fs(14), fontWeight: 600, lineHeight: 1.2 }}>{n}</div>
                     <div style={{ fontSize: fs(13), color: s.colors.muted, marginTop: 3 }}>{r}</div>

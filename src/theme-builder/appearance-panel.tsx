@@ -38,6 +38,7 @@ import {
   googleFontStack,
   prettifyFontName,
   resolveTokenColor,
+  withBase,
   type BtnTokens,
   type CardTokens,
   type CustomFont,
@@ -490,7 +491,7 @@ function StylePreview({ group, value, accent }: { group: string; value: string; 
   // avatars — a generic avatar image at full size, corners rounded per option
   const r = value === "circle" ? "9999px" : value === "rounded" ? "8px" : "0px"
   return (
-    <img src="/avatars/unassigned.png" alt="" className="size-10 shrink-0 object-cover" style={{ borderRadius: r }} />
+    <img src={withBase("/avatars/unassigned.png")} alt="" className="size-10 shrink-0 object-cover" style={{ borderRadius: r }} />
   )
 }
 
