@@ -896,6 +896,36 @@ function ListViewsBody({ view, setView, tok, setTok, activeTok }: { view: FeedVi
 
 /* ─── Advanced: edit tokens, tokens JSON, custom CSS ─── */
 
+// The handful of colors designers touch most often — surfaced directly on the
+// Edit theme screen for quick access; the full grouped list lives one tap deeper.
+const EDIT_ESSENTIALS: { key: string; label: string; desc: string }[] = [
+  { key: "color.content.default", label: "Body text", desc: "Primary, high-emphasis text" },
+  { key: "color.content.heading.default", label: "Headings", desc: "Section and component titles" },
+  { key: "color.action.primary.default", label: "Primary action", desc: "Main CTAs — buttons, toggles, tabs" },
+  { key: "color.link.default", label: "Link", desc: "Interactive text links" },
+  { key: "color.surface.page", label: "Page background", desc: "Canvas behind all UI" },
+  { key: "color.surface.default", label: "Container background", desc: "Cards, panels and content areas" },
+  { key: "color.line.default", label: "Border", desc: "Separators and component outlines" },
+]
+
+function EditEssentialsBody({ mode, tokens, setTokens, onMore }: { mode: "light" | "dark"; tokens: PresetTokens; setTokens: (updater: (p: PresetTokens) => PresetTokens) => void; onMore: () => void }) {
+  return (
+    <div className="space-y-3">
+      {EDIT_ESSENTIALS.map((tok) => (
+        <ColorCard
+          key={tok.key}
+          label={tok.label}
+          desc={tok.desc}
+          value={tokens[mode]?.[tok.key] || "#000000"}
+          onChange={(v) => setTokens((prev) => ({ ...prev, [mode]: { ...prev[mode], [tok.key]: v } }))}
+        />
+      ))}
+      <Separator className="my-2" />
+      <NavRow label="More colors" desc="Every color, grouped" onClick={onMore} />
+    </div>
+  )
+}
+
 function EditTokensBody({ mode, tokens, setTokens }: { mode: "light" | "dark"; tokens: PresetTokens; setTokens: (updater: (p: PresetTokens) => PresetTokens) => void }) {
   return (
     <div>
@@ -1069,6 +1099,7 @@ const META: Record<string, { title: string; subtitle?: string; back?: boolean }>
   branding: { title: "Branding", subtitle: "Upload your logo and favicon.", back: true },
   typography: { title: "Typography", subtitle: "Choose fonts and text size.", back: true },
   "edit-theme": { title: "Edit theme", subtitle: "Fine-tune colors for light and dark.", back: true },
+  "edit-theme-all": { title: "More colors", subtitle: "Every color, grouped.", back: true },
   styles: { title: "Styles", subtitle: "Control the shape of buttons, cards and avatars.", back: true },
   components: { title: "Components", subtitle: "Fine-tune individual UI elements.", back: true },
   buttons: { title: "Buttons", subtitle: "Customize button appearance and variants.", back: true },
@@ -1332,6 +1363,10 @@ export function AppearancePanel(props: PanelProps) {
     }
 
     if (current === "edit-theme") {
+      return <EditEssentialsBody mode={editMode} tokens={tokens} setTokens={setTokens} onMore={() => push("edit-theme-all")} />
+    }
+
+    if (current === "edit-theme-all") {
       return <EditTokensBody mode={editMode} tokens={tokens} setTokens={setTokens} />
     }
 
@@ -1375,7 +1410,7 @@ export function AppearancePanel(props: PanelProps) {
   return (
     <aside ref={asideRef} className="bg-background flex h-screen w-[400px] shrink-0 flex-col overflow-hidden border-l">
       <SidebarHeader title={meta.title} subtitle={meta.subtitle} onBack={meta.back ? back : undefined} scrolled={scrolled} screenKey={current}>
-        {current === "edit-theme" && (
+        {(current === "edit-theme" || current === "edit-theme-all") && (
           <Seg
             value={editMode}
             onValueChange={(v) => { setEditMode(v as "light" | "dark"); setColorTab(v) }}

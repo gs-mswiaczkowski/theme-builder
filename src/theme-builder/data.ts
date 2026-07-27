@@ -275,6 +275,10 @@ export const TOKEN_GROUPS: { id: string; label: string; desc?: string; tokens: {
     { key: "color.content.inverse", label: "Text on dark", desc: "Text on any dark or high-contrast background" },
     { key: "color.content.disabled", label: "Disabled text", desc: "Text on disabled or unavailable elements" },
   ] },
+  { id: "link", label: "Links", desc: "Colors for text links.", tokens: [
+    { key: "color.link.default", label: "Link", desc: "Interactive text links" },
+    { key: "color.link.hover", label: "Link — hover", desc: "When the pointer is over it" },
+  ] },
   { id: "action", label: "Actions", desc: "Colors for buttons, toggles and tabs.", tokens: [
     { key: "color.action.primary.default", label: "Primary action", desc: "Main CTAs — buttons, toggles, tabs" },
     { key: "color.action.primary.hover", label: "Primary — hover", desc: "When the pointer is over it" },
@@ -301,10 +305,6 @@ export const TOKEN_GROUPS: { id: string; label: string; desc?: string; tokens: {
     { key: "color.community.highlighted", label: "Highlighted", desc: "Featured or promoted content" },
     { key: "color.community.pinned", label: "Pinned", desc: "Pinned to the top of listings" },
     { key: "color.community.sticky", label: "Sticky", desc: "Stickied by a moderator" },
-  ] },
-  { id: "link", label: "Links", desc: "Colors for text links.", tokens: [
-    { key: "color.link.default", label: "Link", desc: "Interactive text links" },
-    { key: "color.link.hover", label: "Link — hover", desc: "When the pointer is over it" },
   ] },
 ]
 
