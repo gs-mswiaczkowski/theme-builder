@@ -899,8 +899,9 @@ function ListViewsBody({ view, setView, tok, setTok, activeTok }: { view: FeedVi
 function EditTokensBody({ mode, tokens, setTokens }: { mode: "light" | "dark"; tokens: PresetTokens; setTokens: (updater: (p: PresetTokens) => PresetTokens) => void }) {
   return (
     <div>
-      {TOKEN_GROUPS.map((g) => (
-        <div key={g.id} className="mb-6 last:mb-0">
+      {TOKEN_GROUPS.map((g, i) => (
+        <div key={g.id}>
+          {i > 0 && <Separator className="my-6" />}
           <SectionLabel title={g.label} desc={g.desc} />
           <div className="space-y-3">
             {g.tokens.map((tok) => (
