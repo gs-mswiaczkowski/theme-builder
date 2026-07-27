@@ -299,7 +299,7 @@ export const TOKEN_GROUPS: { id: string; label: string; desc?: string; tokens: {
     { key: "color.status.information", label: "Information", desc: "Neutral informational messages" },
     { key: "color.status.danger", label: "Error", desc: "Errors and critical issues" },
   ] },
-  { id: "community", label: "Community status", desc: "Colors that flag a topic's state — answered, pinned, and so on.", tokens: [
+  { id: "community", label: "Community status", desc: "Colors that flag a topic's state, such as answered or pinned.", tokens: [
     { key: "color.community.answered", label: "Answered", desc: "Topic has an accepted answer" },
     { key: "color.community.unanswered", label: "Unanswered", desc: "Topic is awaiting a response" },
     { key: "color.community.highlighted", label: "Highlighted", desc: "Featured or promoted content" },
