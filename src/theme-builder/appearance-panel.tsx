@@ -90,8 +90,8 @@ function SidebarHeader({ title, subtitle, onBack, onClose, scrolled, screenKey, 
 function SectionLabel({ title, desc }: { title: string; desc?: string }) {
   return (
     <div className="mb-3">
-      <p className="text-sm font-medium">{title}</p>
-      {desc && <p className="text-muted-foreground text-xs">{desc}</p>}
+      <p className="text-base font-semibold">{title}</p>
+      {desc && <p className="text-muted-foreground mt-0.5 text-[13px] leading-snug">{desc}</p>}
     </div>
   )
 }
