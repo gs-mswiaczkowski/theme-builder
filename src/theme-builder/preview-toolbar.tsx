@@ -80,8 +80,8 @@ export function PreviewToolbar({ viewport, setViewport, onPublish, onDiscard, pu
         </button>
         <Dialog.Root open={confirmDiscard} onOpenChange={setConfirmDiscard}>
           <Dialog.Portal>
-            <Dialog.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 fixed inset-0 z-50 bg-black/50" />
-            <Dialog.Content onCloseAutoFocus={(e) => e.preventDefault()} className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-white p-6 text-neutral-900 shadow-xl duration-200">
+            <Dialog.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 fixed inset-0 z-50 bg-black/50 duration-200" />
+            <Dialog.Content onCloseAutoFocus={(e) => e.preventDefault()} className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-white p-6 text-neutral-900 shadow-xl duration-200">
               <Dialog.Title className="text-base font-semibold">Discard all changes?</Dialog.Title>
               <Dialog.Description className="mt-1.5 text-sm text-neutral-500">This reverts to your last published theme and can't be undone.</Dialog.Description>
               <div className="mt-5 flex justify-end gap-2">
