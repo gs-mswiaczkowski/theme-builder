@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react"
-import { ArrowLeft, Check, ChevronRight, Code2, Component, Contrast, Image as ImageIcon, Moon, Palette, RotateCcw, Search, Shapes, Sun, Type, UploadCloud } from "lucide-react"
+import { ArrowLeft, Check, ChevronRight, Code2, Component, Contrast, Image as ImageIcon, Moon, Palette, RotateCcw, Search, Shapes, Sun, Type, UploadCloud, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -61,9 +61,19 @@ const ROW =
 
 /* ─── Building blocks ─── */
 
-function SidebarHeader({ title, subtitle, onBack, scrolled, screenKey, children }: { title: string; subtitle?: string; onBack?: () => void; scrolled?: boolean; screenKey: string; children?: ReactNode }) {
+function SidebarHeader({ title, subtitle, onBack, onClose, scrolled, screenKey, children }: { title: string; subtitle?: string; onBack?: () => void; onClose?: () => void; scrolled?: boolean; screenKey: string; children?: ReactNode }) {
   return (
     <div className={cn("bg-background relative z-10 shrink-0 px-6 pt-6 pb-5 transition-shadow", scrolled && "shadow-[0_6px_14px_-8px_rgb(0_0_0/0.2)]")}>
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="text-muted-foreground hover:bg-accent hover:text-foreground absolute top-6 right-6 flex size-8 items-center justify-center rounded-lg transition-colors"
+        >
+          <X className="size-4" />
+        </button>
+      )}
       {onBack
         ? <Button variant="outline" size="icon" className="mb-5 size-8 rounded-full" onClick={onBack}><ArrowLeft /></Button>
         : <div className="mb-5 flex size-8 items-center justify-center rounded-lg border"><Palette className="text-muted-foreground size-4" /></div>
@@ -898,10 +908,11 @@ function ListViewsBody({ view, setView, tok, setTok, activeTok }: { view: FeedVi
 
 // The handful of colors designers touch most often — surfaced directly on the
 // Edit theme screen for quick access; the full grouped list lives one tap deeper.
+// Brand color (on the Theme screen) already drives the primary action, so it's
+// intentionally left out of the essentials here.
 const EDIT_ESSENTIALS: { key: string; label: string; desc: string }[] = [
   { key: "color.content.default", label: "Body text", desc: "Primary, high-emphasis text" },
   { key: "color.content.heading.default", label: "Headings", desc: "Section and component titles" },
-  { key: "color.action.primary.default", label: "Primary action", desc: "Main CTAs — buttons, toggles, tabs" },
   { key: "color.link.default", label: "Link", desc: "Interactive text links" },
   { key: "color.surface.page", label: "Page background", desc: "Canvas behind all UI" },
   { key: "color.surface.default", label: "Container background", desc: "Cards, panels and content areas" },
@@ -910,17 +921,19 @@ const EDIT_ESSENTIALS: { key: string; label: string; desc: string }[] = [
 
 function EditEssentialsBody({ mode, tokens, setTokens, onMore }: { mode: "light" | "dark"; tokens: PresetTokens; setTokens: (updater: (p: PresetTokens) => PresetTokens) => void; onMore: () => void }) {
   return (
-    <div className="space-y-3">
-      {EDIT_ESSENTIALS.map((tok) => (
-        <ColorCard
-          key={tok.key}
-          label={tok.label}
-          desc={tok.desc}
-          value={tokens[mode]?.[tok.key] || "#000000"}
-          onChange={(v) => setTokens((prev) => ({ ...prev, [mode]: { ...prev[mode], [tok.key]: v } }))}
-        />
-      ))}
-      <Separator className="my-2" />
+    <div>
+      <div className="space-y-3">
+        {EDIT_ESSENTIALS.map((tok) => (
+          <ColorCard
+            key={tok.key}
+            label={tok.label}
+            desc={tok.desc}
+            value={tokens[mode]?.[tok.key] || "#000000"}
+            onChange={(v) => setTokens((prev) => ({ ...prev, [mode]: { ...prev[mode], [tok.key]: v } }))}
+          />
+        ))}
+      </div>
+      <Separator className="my-5" />
       <NavRow label="More colors" desc="Every color, grouped" onClick={onMore} />
     </div>
   )
@@ -1052,6 +1065,7 @@ function CustomCssBody({ css, setCss }: { css: string; setCss: (v: string) => vo
 
 type PanelProps = {
   open: boolean
+  onRequestClose: () => void
   selectedPreset: string
   setSelectedPreset: (id: string) => void
   isCustomized: boolean
@@ -1113,7 +1127,7 @@ const META: Record<string, { title: string; subtitle?: string; back?: boolean }>
 
 export function AppearancePanel(props: PanelProps) {
   const {
-    open, selectedPreset, setSelectedPreset, isCustomized, brandColor, setBrandColor, mode, setMode, colorTab, setColorTab,
+    open, onRequestClose, selectedPreset, setSelectedPreset, isCustomized, brandColor, setBrandColor, mode, setMode, colorTab, setColorTab,
     headingFont, setHeadingFont, bodyFont, setBodyFont, textSize, setTextSize, fonts, onAddFont, onAddGoogleFont,
     styles, setStyles, setCardTreatment, cardTokens, setCardTokens, feedTokens, setFeedTokens, feedView, setFeedView, logoLight, setLogoLight, logoDark, setLogoDark,
     btnTokens, setBtnTokens, activeTok, tokens, setTokens, customCss, setCustomCss,
@@ -1409,7 +1423,7 @@ export function AppearancePanel(props: PanelProps) {
 
   return (
     <aside ref={asideRef} className="bg-background flex h-screen w-[400px] shrink-0 flex-col overflow-hidden border-l">
-      <SidebarHeader title={meta.title} subtitle={meta.subtitle} onBack={meta.back ? back : undefined} scrolled={scrolled} screenKey={current}>
+      <SidebarHeader title={meta.title} subtitle={meta.subtitle} onBack={meta.back ? back : undefined} onClose={current === "home" ? onRequestClose : undefined} scrolled={scrolled} screenKey={current}>
         {(current === "edit-theme" || current === "edit-theme-all") && (
           <Seg
             value={editMode}

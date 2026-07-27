@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Check, Monitor, Smartphone, UploadCloud, Undo2, Redo2 } from "lucide-react"
 
 import { Dialog } from "radix-ui"
@@ -20,6 +19,10 @@ type Props = {
   onUndo?: () => void
   onRedo?: () => void
   className?: string
+  // Discard confirmation is controlled from the parent so the panel's X can
+  // open the same dialog.
+  confirmDiscard: boolean
+  setConfirmDiscard: (v: boolean) => void
 }
 
 function IconBtn({ label, onClick, disabled, active, light, children }: { label: string; onClick?: () => void; disabled?: boolean; active?: boolean; light?: boolean; children: React.ReactNode }) {
@@ -51,8 +54,7 @@ function IconBtn({ label, onClick, disabled, active, light, children }: { label:
   )
 }
 
-export function PreviewToolbar({ viewport, setViewport, onPublish, onDiscard, published, light = false, canUndo = false, canRedo = false, onUndo, onRedo, className }: Props) {
-  const [confirmDiscard, setConfirmDiscard] = useState(false)
+export function PreviewToolbar({ viewport, setViewport, onPublish, onDiscard, published, light = false, canUndo = false, canRedo = false, onUndo, onRedo, className, confirmDiscard, setConfirmDiscard }: Props) {
   return (
     <div className={cn("absolute bottom-6 left-1/2 z-20 -translate-x-1/2", className)}>
       <div className={cn("flex items-center gap-0.5 rounded-2xl p-1.5 shadow-lg ring-1", light ? "bg-white ring-black/10" : "bg-neutral-900 ring-white/10")}>
@@ -66,23 +68,22 @@ export function PreviewToolbar({ viewport, setViewport, onPublish, onDiscard, pu
 
         <div className={cn("mx-1 h-5 w-px", light ? "bg-neutral-200" : "bg-white/15")} />
 
+        <button
+          type="button"
+          onClick={() => setConfirmDiscard(true)}
+          className={cn(
+            "flex h-9 items-center rounded-lg px-3 text-sm font-medium transition-colors",
+            light ? "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900" : "text-white/80 hover:bg-white/10 hover:text-white",
+          )}
+        >
+          Discard
+        </button>
         <Dialog.Root open={confirmDiscard} onOpenChange={setConfirmDiscard}>
-          <Dialog.Trigger asChild>
-            <button
-              type="button"
-              className={cn(
-                "flex h-9 items-center rounded-lg px-3 text-sm font-medium transition-colors",
-                light ? "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900" : "text-white/80 hover:bg-white/10 hover:text-white",
-              )}
-            >
-              Discard
-            </button>
-          </Dialog.Trigger>
           <Dialog.Portal>
             <Dialog.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 fixed inset-0 z-50 bg-black/50" />
             <Dialog.Content onCloseAutoFocus={(e) => e.preventDefault()} className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-white p-6 text-neutral-900 shadow-xl duration-200">
               <Dialog.Title className="text-base font-semibold">Discard all changes?</Dialog.Title>
-              <Dialog.Description className="mt-1.5 text-sm text-neutral-500">This resets everything to the default theme and can't be undone.</Dialog.Description>
+              <Dialog.Description className="mt-1.5 text-sm text-neutral-500">This reverts to your last published theme and can't be undone.</Dialog.Description>
               <div className="mt-5 flex justify-end gap-2">
                 <Dialog.Close asChild>
                   <Button variant="outline" size="sm">Cancel</Button>

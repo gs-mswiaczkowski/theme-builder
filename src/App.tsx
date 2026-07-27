@@ -118,6 +118,9 @@ function App() {
   // The prototype opens on the community with the widget sidebar; the Appearance
   // panel + toolbar only appear after the user clicks "Appearance".
   const [panelOpen, setPanelOpen] = useState(false)
+  // Shared discard confirmation — opened by the toolbar's Discard button and the
+  // panel's top-right X.
+  const [confirmDiscard, setConfirmDiscard] = useState(false)
 
   // All fonts available to pick from: built-in + added Google Fonts + uploaded.
   const googleFontList: Font[] = googleFonts.map((name) => {
@@ -500,6 +503,8 @@ function App() {
           canRedo={canRedo}
           onUndo={undo}
           onRedo={redo}
+          confirmDiscard={confirmDiscard}
+          setConfirmDiscard={setConfirmDiscard}
           className={cn("transition-all duration-300 ease-out", panelOpen ? "translate-y-0 opacity-100 delay-[600ms]" : "pointer-events-none translate-y-[180%] opacity-0")}
         />
       </main>
@@ -512,6 +517,7 @@ function App() {
       >
       <AppearancePanel
         open={panelOpen}
+        onRequestClose={() => setConfirmDiscard(true)}
         selectedPreset={selectedPreset}
         setSelectedPreset={selectPreset}
         isCustomized={isCustomized}
